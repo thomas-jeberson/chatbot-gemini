@@ -1,14 +1,17 @@
-# Use official JDK 21 image from Eclipse Temurin
+# Use official JDK 21 image
 FROM eclipse-temurin:21-jdk
 
 # Set working directory inside the container
 WORKDIR /app
 
-# Copy everything from your local project into the container
+# Copy everything
 COPY . .
 
-# Build the Spring Boot app (skip tests to speed up build)
+# ✅ Fix permissions so mvnw can run
+RUN chmod +x ./mvnw
+
+# Build the Spring Boot app (skip tests to save time)
 RUN ./mvnw clean package -DskipTests
 
-# Run the compiled JAR file (Render will use this as entrypoint)
+# Run the built JAR file
 CMD ["sh", "-c", "java -jar target/*.jar"]

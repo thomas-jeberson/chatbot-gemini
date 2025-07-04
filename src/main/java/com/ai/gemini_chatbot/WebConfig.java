@@ -10,6 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("https://chatbot-thomas.netlify.app")
                 .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
+                .allowedHeaders("*")
                 .allowCredentials(true);
     }
 }

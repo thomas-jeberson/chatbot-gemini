@@ -102,7 +102,6 @@ public class QnAService {
                 replyText = extractResponseText(geminiResponse);
             }
         } catch (Exception ex) {
-            System.err.println("Gemini API Error: " + ex.getMessage());
             replyText = "Sorry, I encountered an error processing your request.";
         }
 

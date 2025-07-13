@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import {fetchChatResponse} from '../services/api';
 import {v4 as uuidv4} from 'uuid';
 import {FiSend} from 'react-icons/fi';
+import {useNavigate} from "react-router-dom";
 
 export default function Chatbot() {
     const [sessionId, setSessionId] = useState('');
@@ -93,9 +94,11 @@ export default function Chatbot() {
         return parts.length ? parts : text;
     };
 
+    const navigate = useNavigate();
+
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        window.location.href = "/login";
+        localStorage.removeItem("token");
+        navigate("/login"); // ✅ Uses React Router navigation
     };
 
     return (
@@ -138,157 +141,174 @@ export default function Chatbot() {
             </div>
 
             <style>{`
-                body {
-                    background: #0f0f14;
-                    color: #fff;
-                    font-family: 'Arial', sans-serif;
-                    margin: 0;
-                }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
 
-                .chatbot-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                    padding: 20px;
-                    background: radial-gradient(circle at top left, #1c1c2e, #0f0f14);
-                }
-
-                .chatbot-wrapper {
-                    width: 100%;
-                    max-width: 600px;
-                    height: 70vh;
-                    background: #1e1e2f;
-                    color: #eee;
-                    display: flex;
-                    flex-direction: column;
-                    border-radius: 16px;
-                    overflow: hidden;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-                    position: relative;
-                }
-
-                .chatbot-header {
-                    padding: 15px;
-                    background: linear-gradient(to right, #5a189a, #3c096c);
-                    text-align: center;
-                    color: #fff;
-                }
-
-                .chatbot-header h1 {
-                    margin: 0;
-                    font-size: 24px;
-                }
-
-                .chatbot-body {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    padding: 15px;
-                    overflow-y: hidden;
-                }
-
-                .chat-history {
-                    flex: 1;
-                    overflow-y: auto;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    scrollbar-width: thin;
-                }
-
-                .chat-bubble {
-                    max-width: 80%;
-                    padding: 10px 15px;
-                    border-radius: 15px;
-                    font-size: 14px;
-                    line-height: 1.4;
-                    word-wrap: break-word;
-                }
-
-                .chat-bubble.user {
-                    background-color: #4c1d95;
-                    color: #fff;
-                    align-self: flex-end;
-                    border-bottom-right-radius: 0;
-                }
-
-                .chat-bubble.bot {
-                    background-color: #2e2e3f;
-                    color: #e2e2e2;
-                    align-self: flex-start;
-                    border-bottom-left-radius: 0;
-                }
-
-                .input-container {
-  padding: 10px 12px;
-  background-color: #14141f;
-  border-top: 1px solid #222;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    .chatbot-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    height: 100vh;
+    background: radial-gradient(circle at top left, #1c1c2e, #0f0f14);
 }
 
-.input-field {
-  flex: 1;
-  resize: none;
-  padding: 12px 16px;
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  font-size: 14px;
-  height: 40px;
-  background-color: #222;
-  color: #fff;
-  max-height: 100px;
-  overflow-y: auto;
-  line-height: 1.5;
+@supports (height: 100dvh) {
+    .chatbot-container {
+        height: 100dvh;
+    }
+
+    .chatbot-wrapper {
+        height: 100dvh;
+    }
 }
 
-/* Hide scrollbar in WebKit browsers */
-.input-field::-webkit-scrollbar {
-  display: none;
+
+.chatbot-wrapper {
+    width: 100%;
+    max-width: 600px;
+    background: #1e1e2f;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
 }
 
-/* Optional scrollbar for Firefox */
-.input-field {
-  scrollbar-width: thin;
-  scrollbar-color: #444 transparent;
-}
+    .chatbot-header {
+        padding: 15px 20px;
+        background: linear-gradient(to right, #5a189a, #3c096c);
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap; /* ✅ Ensure single line */
+        gap: 10px;
+        min-height: 60px;
+    }
 
-                .send-button {
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    padding: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
+    .chatbot-header h1 {
+        margin: 0;
+        font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-                .send-icon {
-                    font-size: 22px;
-                    color: #9f7aea;
-                }
+    .logout-btn {
+        background-color: #7b2cbf;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
 
-                .logout-btn {
-                    background-color: #7b2cbf;
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    font-size: 14px;
-                    font-weight: bold;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                }
+    .logout-btn:hover {
+        background-color: #5a189a;
+    }
 
-                .logout-btn:hover {
-                    background-color: #5a189a;
-                }
-            `}</style>
+    .chatbot-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        overflow-y: hidden;
+    }
+
+    .chat-history {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        scrollbar-width: thin;
+    }
+
+    .chat-bubble {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 15px;
+        font-size: 14px;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
+
+    .chat-bubble.user {
+        background-color: #4c1d95;
+        color: #fff;
+        align-self: flex-end;
+        border-bottom-right-radius: 0;
+    }
+
+    .chat-bubble.bot {
+        background-color: #2e2e3f;
+        color: #e2e2e2;
+        align-self: flex-start;
+        border-bottom-left-radius: 0;
+    }
+
+    .input-container {
+        padding: 10px 12px;
+        background-color: #14141f;
+        border-top: 1px solid #222;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 60px;
+    }
+
+    .input-field {
+        flex: 1;
+        resize: none;
+        padding: 12px 16px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        font-size: 14px;
+        height: 40px;
+        background-color: #222;
+        color: #fff;
+        max-height: 100px;
+        overflow-y: auto;
+        line-height: 1.5;
+    }
+
+    .input-field::-webkit-scrollbar {
+        display: none;
+    }
+
+    .input-field {
+        scrollbar-width: thin;
+        scrollbar-color: #444 transparent;
+    }
+
+    .send-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .send-icon {
+        font-size: 22px;
+        color: #9f7aea;
+    }
+`}</style>
+
+
         </div>
     );
 }

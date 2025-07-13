@@ -9,41 +9,60 @@ const LandingPage = () => {
         const styleSheet = document.createElement("style");
         styleSheet.type = "text/css";
         styleSheet.innerText = `
-            @keyframes float {
-                0%, 100% {
-                    transform: translateY(0px) rotate(0deg);
-                }
-                50% {
-                    transform: translateY(-20px) rotate(180deg);
-                }
-            }
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(180deg);
+        }
+    }
 
-            @keyframes pulse-glow {
-                0%, 100% {
-                    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-                    transform: scale(1);
-                }
-                50% {
-                    box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
-                    transform: scale(1.02);
-                }
-            }
+    @keyframes pulse-glow {
+        0%, 100% {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+            transform: scale(1);
+        }
+        50% {
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+            transform: scale(1.02);
+        }
+    }
 
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-            * {
-                box-sizing: border-box;
-            }
-        `;
+    * {
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 768px) {
+        .auth-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .logo {
+            justify-content: center;
+            width: 100%;
+        }
+
+        nav {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+`;
         document.head.appendChild(styleSheet);
         return () => {
             if (document.head.contains(styleSheet)) {
@@ -59,13 +78,11 @@ const LandingPage = () => {
                     <div style={styles.navContainer}>
                         <div style={styles.navContent}>
                             <div style={styles.logo}>
-                                <div style={styles.logoIcon}>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                                        <polyline points="16 18 22 12 16 6"></polyline>
-                                        <polyline points="8 6 2 12 8 18"></polyline>
-                                    </svg>
+                                <div style={styles.logoIcon}>...</div>
+                                <div style={styles.logoTextWrapper}>
+                                    <span style={styles.logoLine1}>Thomas's</span>
+                                    <span style={styles.logoLine2}>Chatbot</span>
                                 </div>
-                                <span style={styles.logoText}>Thomas's Chatbot</span>
                             </div>
                             <div style={styles.authButtons}>
                                 <button
@@ -192,10 +209,12 @@ const styles = {
         width: '100%',
     },
     navContainer: {
-        maxWidth: '2000px',
+        maxWidth: '1600px',
         margin: '0 auto',
-        padding: '0 5rem',
-        backgroundColor: 'transparent',           // ✅ make sure it's transparent
+        padding: window.innerWidth > 768 ? '0 6.5rem' : '0',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
     },
@@ -203,16 +222,20 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: '3.5rem',
+        flexWrap: 'wrap',
+        height: 'auto',
         width: '100%',
-        backgroundColor: 'transparent',           // ✅ ensure it's not adding background
+        backgroundColor: 'transparent',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-    },
+        padding: '0.75rem 3',
+    }
+,
     logo: {
         display: 'flex',
         alignItems: 'center',
         gap: '0.75rem',
+        flex: 1,
     },
     logoIcon: {
         width: '2.5rem',
@@ -236,7 +259,10 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',
+        flexWrap: 'nowrap',
+        justifyContent: 'flex-end',
     },
+
     loginButton: {
         display: 'flex',
         alignItems: 'center',
@@ -430,6 +456,26 @@ const styles = {
         color: '#e5e7eb',
         fontSize: '0.875rem',
     },
+    logoTextWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        lineHeight: '1.1',
+    },
+
+    logoLine1: {
+        fontSize: '1.5rem',
+        fontWeight: '700',
+        color: '#fff',
+    },
+
+    logoLine2: {
+        fontSize: '1.5rem',
+        fontWeight: '700',
+        background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+    },
+
 };
 
 export default LandingPage;

@@ -1,46 +1,23 @@
-import {useEffect, useState} from 'react'
-import './App.css'
-import ChatInput from "./components/ChatInput.jsx";
-import ChatResponse from "./components/ChatResponse.jsx";
-import {fetchChatResponse} from "./services/api.jsx";
-import {v4 as uuidv4} from "uuid";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import Registration from './components/Registration';
+import RegistrationSuccess from './components/RegistrationSuccess';
+import Chatbot from './components/Chatbot';
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Login from "./components/Login.jsx";
+import LandingPage from "./components/landing/LandingPage.jsx";
 
-function App() {
-    const [sessionId,setSessionId] = useState("");
-    const [response, setResponse] = useState(null);
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const newSesionId = uuidv4();
-        setSessionId(newSesionId);
-        console.log("Session ID: ", newSesionId);
-    }, []);
-
-    const handleQuestionSubmit = async (question) => {
-        if(!question?.trim()) return;
-        setLoading(true);
-        setResponse({});
-        try{
-            const apiResponse=await fetchChatResponse(question,sessionId);
-            console.log("apiResponse: ",apiResponse);
-            setResponse(apiResponse);
-        }catch(e){
-            console.log("Failed to get response",e);
-            alert("failed to get response");
-        }finally{
-            setLoading(false);
-        }
-    }
+export default function App() {
     return (
-        <div className='App'>
-            <header className='bg-primary text-white text-center py-4'>
-                <h1>THOMAS'S CHATBOT</h1>
-            </header>
-            <ChatInput onSubmit={handleQuestionSubmit}/>
-            <ChatResponse response={response}/>
-        </div>
-    )
+        <Router>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path={"/register"} element={<Registration />} />
+                <Route path="/registrationSuccess" element={<RegistrationSuccess />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/chatbot" element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
+            </Routes>
+        </Router>
+    );
 }
-
-export default App

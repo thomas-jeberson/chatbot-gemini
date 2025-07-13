@@ -1,4 +1,4 @@
-HELP.md
+# Ignore build folders and IDE files
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Environment files (add if you use .env files)
+.env
+
+# Log files
+*.log

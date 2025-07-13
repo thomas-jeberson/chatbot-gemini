@@ -1,13 +1,15 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
-const API_URL = "http://localhost:8080/api/qna/ask";
+const API_ENDPOINT = "/qna/ask";
 
 export const fetchChatResponse = async (question, sessionId) => {
+    const token=localStorage.getItem('token');
     try {
-        const response = await axios.post(API_URL, {
-            question: question,
-            sessionId: sessionId // 🟡 Pass sessionId from frontend
-        });
+        const response = await axiosInstance.post(API_ENDPOINT, {
+            question,
+            sessionId
+        },
+            {headers: {Authorization: `Bearer ${token}`}});
         return response.data;
     } catch (e) {
         console.error("❌ Error while fetching chat response:", e);

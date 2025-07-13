@@ -1,7 +1,11 @@
 package com.ai.cutsomized_chatbot.service;
 
 import com.ai.cutsomized_chatbot.dao.ChatMessageRepository;
+import com.ai.cutsomized_chatbot.dao.UserRepository;
 import com.ai.cutsomized_chatbot.entity.ChatHistoryEntity;
+import com.ai.cutsomized_chatbot.entity.UserEntity;
+import org.springframework.security.core.Authentication;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -22,13 +26,17 @@ public class QnAService {
 
     private final WebClient webClient;
     private final ChatMessageRepository chatRepo;
+    private final UserRepository userRepo;
 
-    public QnAService(WebClient.Builder builder, ChatMessageRepository chatRepo) {
+    public QnAService(WebClient.Builder builder, ChatMessageRepository chatRepo, UserRepository userRepo) {
         this.webClient = builder.baseUrl("https://generativelanguage.googleapis.com").build();
         this.chatRepo = chatRepo;
+        this.userRepo=userRepo;
     }
 
-    public Map<String, Object> getAnswer(String question, String sessionId) {
+    public Map<String, Object> getAnswer(String question, String sessionId, Authentication auth) {
+        String userName= auth.getName();
+        UserEntity user= userRepo.findByUserName(userName).orElseThrow(()->new RuntimeException("User not Found"));
         // Validate input
         if (question == null || question.isBlank()) {
             throw new IllegalArgumentException("Question cannot be empty");
@@ -40,10 +48,11 @@ public class QnAService {
         userMessage.setSender("user");
         userMessage.setMessage(question);
         userMessage.setTimestamp(LocalDateTime.now());
+        userMessage.setUser(user);
         chatRepo.save(userMessage);
 
         // Fetch conversation history
-        List<ChatHistoryEntity> history = chatRepo.findBySessionIdOrderByTimestampAsc(sessionId);
+        List<ChatHistoryEntity> history = chatRepo.findByUserAndSessionIdOrderByTimestampAsc(user,sessionId);
 
         // Prepare conversation context
         List<Map<String, Object>> contents = new ArrayList<>();
@@ -107,6 +116,7 @@ public class QnAService {
 
         // Save bot reply
         ChatHistoryEntity botReply = new ChatHistoryEntity();
+        botReply.setUser(user);
         botReply.setSessionId(sessionId);
         botReply.setSender("model");
         botReply.setMessage(replyText);

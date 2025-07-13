@@ -1,18 +1,24 @@
-# Use official OpenJDK 21 image
-FROM eclipse-temurin:21-jdk
+# === Stage 1: Build the application ===
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 
-# Set environment variables (optional if passed at runtime)
-ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
-    JAVA_OPTS=""
-
-# Set working directory inside container
 WORKDIR /app
 
-# Copy the JAR file from target directory to container
-COPY target/cutsomized_chatbot-0.0.1-SNAPSHOT.jar app.jar
+# Copy Maven project files
+COPY pom.xml .
+COPY src ./src
 
-# Expose port 8080
+# Build the Spring Boot JAR
+RUN mvn clean package -DskipTests
+
+# === Stage 2: Run the application ===
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /app
+
+# Copy the JAR built in the previous stage
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
 
 # Run the JAR file
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

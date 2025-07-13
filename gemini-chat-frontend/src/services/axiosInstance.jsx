@@ -1,7 +1,7 @@
 import axios from 'axios';
 const credentials=btoa("testuser:test123");
 const axiosInstance = axios.create({
-    baseURL: 'https://chatbot-gemini-17zq.onrender.com/api',
+    baseURL: 'http://localhost:8080/api',
     headers: {
         'Content-Type': 'application/json'
     }

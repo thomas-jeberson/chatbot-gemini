@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "thomaschatbot.netlify.app")
+@CrossOrigin(origins = {
+        "https://thomaschatbot.netlify.app",
+        "http://localhost:5173"
+})
 @RestController
 @RequestMapping("/api/qna")
 public class AIController {

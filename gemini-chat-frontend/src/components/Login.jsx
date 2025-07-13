@@ -32,13 +32,13 @@ export default function Login() {
         }
 
         try {
-            const response = await axios.post("https://thomas-chatbot.onrender.com/api/authenticate", {
+            const response = await axios.post("https://thomas-chatbot.onrender.com/authenticate", {
                 username: formData.username,
                 password: formData.password
             });
 
-            if (response.status === 200 && response.data.accessToken) {
-                localStorage.setItem('token', response.data.accessToken);
+            if (response.status === 200 && response.data.token) {
+                localStorage.setItem('token', response.data.token);
                 navigate('/chatbot');
             } else {
                 setErrors({ general: "Login failed. Try again." });

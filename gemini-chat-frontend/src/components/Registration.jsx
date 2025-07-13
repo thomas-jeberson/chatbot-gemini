@@ -35,7 +35,7 @@ export default function Registration() {
         }
 
         try {
-            const response = await axios.post("https://thomas-chatbot.onrender.com/api/register", {
+            const response = await axios.post("https://thomas-chatbot.onrender.com/register", {
                 username: formData.username,
                 password: formData.password,
             });

@@ -50,21 +50,41 @@ export default function Login() {
 
     return (
         <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-            {/* ✅ Interactive Spline background */}
-            <SplineScene
+            {/* 🔲 Dark Background */}
+            <div
                 style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     width: '100%',
                     height: '100%',
+                    backgroundColor: '#000',
                     zIndex: 0,
-                    transform: 'scale(1.3)',
-                    pointerEvents: 'auto'
                 }}
             />
 
-            {/* ✅ Layered container, only form is clickable */}
+            {/* 🎮 Spline Scene */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                    pointerEvents: 'auto',
+                }}
+            >
+                <SplineScene
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        transform: 'scale(1.3)',
+                    }}
+                />
+            </div>
+
+            {/* 🧾 Login Form Layer */}
             <div
                 className="login-container"
                 style={{
@@ -73,7 +93,7 @@ export default function Login() {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    zIndex: 1,
+                    zIndex: 2,
                     pointerEvents: 'none',
                     display: 'flex',
                     justifyContent: 'center',
@@ -84,7 +104,7 @@ export default function Login() {
                 <form
                     className="login-form"
                     onSubmit={handleSubmit}
-                    style={{ pointerEvents: 'auto' }} // ✅ enable clicking only inside form
+                    style={{ pointerEvents: 'auto' }}
                 >
                     <h2><span className="highlight">Login</span></h2>
 

@@ -52,25 +52,55 @@ export default function Registration() {
 
     return (
         <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-            {/* ✅ Interactive Spline background */}
-            <SplineScene style={{
+            {/* 🔲 Solid Dark Background */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#000',
+                    zIndex: 0
+                }}
+            />
+
+            {/* 🎮 Spline Background */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                    pointerEvents: 'auto',
+                }}
+            >
+                <SplineScene
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        transform: 'scale(1.3)',
+                    }}
+                />
+            </div>
+
+            {/* 🧾 Form Layer */}
+            <div className="registration-container" style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
-                zIndex: 0,
-                transform: 'scale(1.3)',
-                pointerEvents: 'auto'
-            }} />
-
-            {/* ✅ Form layer, allows spline interaction except form itself */}
-            <div className="registration-container" style={{
-                zIndex: 1,
-                position: 'relative',
-                pointerEvents: 'none' // let clicks go through
+                zIndex: 2,
+                pointerEvents: 'none',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '20px'
             }}>
-                <form className="registration-form" onSubmit={handleSubmit}>
+                <form className="registration-form" onSubmit={handleSubmit} style={{ pointerEvents: 'auto' }}>
                     <h2><span className="highlight">Register</span></h2>
 
                     {errors.general && <p className="error">{errors.general}</p>}
@@ -114,17 +144,8 @@ export default function Registration() {
             </div>
 
             <style>{`
-                .registration-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    padding: 20px;
-                }
-
                 .registration-form {
-                    pointer-events: auto; /* ✅ Keeps form interactive */
-                    background: rgba(0, 0, 0, 0.65); /* ✅ Dark transparent */
+                    background: rgba(0, 0, 0, 0.65);
                     color: white;
                     padding: 40px 30px;
                     border-radius: 12px;

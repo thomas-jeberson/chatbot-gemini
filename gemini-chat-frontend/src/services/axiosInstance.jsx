@@ -1,5 +1,4 @@
 import axios from 'axios';
-const credentials=btoa("testuser:test123");
 const axiosInstance = axios.create({
     baseURL: 'https://thomas-chatbot.onrender.com/api',
     headers: {

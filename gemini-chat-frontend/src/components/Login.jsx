@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import SplineScene from "./landing/SplineScene.jsx";
+import axios from "axios";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -32,13 +32,13 @@ export default function Login() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/authenticate", {
+            const response = await axios.post("https://thomas-chatbot.onrender.com/api/authenticate", {
                 username: formData.username,
                 password: formData.password
             });
 
-            if (response.status === 200 && response.data.token) {
-                localStorage.setItem('token', response.data.token);
+            if (response.status === 200 && response.data.accessToken) {
+                localStorage.setItem('token', response.data.accessToken);
                 navigate('/chatbot');
             } else {
                 setErrors({ general: "Login failed. Try again." });

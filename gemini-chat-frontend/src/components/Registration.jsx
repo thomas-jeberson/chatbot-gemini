@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import SplineScene from './landing/SplineScene.jsx';
+import axios from "axios";
 
 export default function Registration() {
     const [formData, setFormData] = useState({
@@ -35,12 +35,12 @@ export default function Registration() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/register", {
+            const response = await axios.post("https://thomas-chatbot.onrender.com/api/register", {
                 username: formData.username,
                 password: formData.password,
             });
 
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
                 navigate('/registrationSuccess');
             } else {
                 setErrors({ general: "Registration failed. Try again." });

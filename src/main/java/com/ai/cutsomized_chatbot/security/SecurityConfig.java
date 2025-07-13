@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/authenticate","/register").permitAll()
+                        .requestMatchers("/api/authenticate","/api/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess->sess.sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
